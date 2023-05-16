@@ -1,0 +1,82 @@
+<project name="ADS-back-end-test" default="run" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="antlib:org.apache.ivy.ant ">
+    <!-- Define properties -->
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="main.class" value="MainKt"/>
+    <property name="kotlin.lib" value="/usr/local/Cellar/kotlin/1.8.21//libexec/lib" />
+    <property name="ivy.lib" value="/usr/local/Cellar/ivy/2.5.1/libexec" />
+
+    <taskdef uri="antlib:org.apache.ivy.ant" resource="org/apache/ivy/ant/antlib.xml">
+        <classpath>
+            <pathelement location="${ivy.lib}/ivy-2.5.1.jar"/>
+        </classpath>
+    </taskdef>
+
+    <taskdef resource="org/apache/ivy/ant/antlib.xml">
+        <classpath>
+            <pathelement location="${ivy.lib}/ivy-2.5.1.jar"/>
+        </classpath>
+    </taskdef>
+
+    <target name="resolve" description="Resolve dependencies using Ivy">
+        <ivy:resolve/>
+        <ivy:retrieve/>
+    </target>
+
+    <!-- Define the kotlinc task -->
+    <typedef resource="org/jetbrains/kotlin/ant/antlib.xml" classpath="${kotlin.lib}/kotlin-ant.jar"/>
+
+    <path id="kotlin.stdlib.path">
+        <fileset dir="${kotlin.lib}">
+            <include name="kotlin-stdlib.jar" />
+        </fileset>
+    </path>
+
+    <target name="compile" depends="resolve">
+        <mkdir dir="${build.dir}/classes" />
+        <!-- Define the kotlinc task -->
+        <kotlinc src="${src.dir}" output="${build.dir}/classes" includeRuntime="false">
+            <classpath>
+                <fileset dir="lib/">
+                    <include name="*.jar" />
+                </fileset>
+                <fileset dir="${kotlin.lib}">
+                    <include name="kotlin-stdlib.jar" />
+                </fileset>
+            </classpath>
+        </kotlinc>
+    </target>
+
+    <!-- Define task targets -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <path refid="kotlin.stdlib.path"/>
+                <pathelement path="${build.dir}/classes"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${dist.dir}/ADS-back-end-test.jar">
+            <fileset dir="${build.dir}/classes"/>
+        </jar>
+    </target>
+
+    <!-- Default target -->
+    <target name="default" depends="clean, run"/>
+
+</project>
+
