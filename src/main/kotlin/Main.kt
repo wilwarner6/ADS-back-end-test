@@ -16,6 +16,7 @@ fun convertFile(fileName: String, convertToXML: Boolean) {
     printWriter.print(outputString)
     printWriter.close()
 }
+
 fun main(args: Array<String>) {
     if (args.size == 0) {
         println("Args must be supplied")
