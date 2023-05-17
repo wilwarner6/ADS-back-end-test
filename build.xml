@@ -72,6 +72,26 @@
     <target name="jar" depends="compile">
         <jar destfile="${dist.dir}/ADS-back-end-test.jar">
             <fileset dir="${build.dir}/classes"/>
+            <restrict>
+                <name name="**/*.class"/>
+                <archives>
+                    <zips>
+                        <fileset dir="lib" includes="**/*.jar"/>
+                        <fileset dir="${kotlin.lib}">
+                            <include name="kotlin-stdlib.jar" />
+                        </fileset>
+                    </zips>
+                </archives>
+            </restrict>
+<!--            <fileset dir="${kotlin.lib}">-->
+<!--                <include name="kotlin-stdlib.jar" />-->
+<!--            </fileset>-->
+<!--            <fileset dir="lib">-->
+<!--                <include name="**/*.jar"/>-->
+<!--            </fileset>-->
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
         </jar>
     </target>
 
