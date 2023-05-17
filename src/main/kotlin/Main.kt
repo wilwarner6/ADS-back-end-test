@@ -17,8 +17,14 @@ fun convertFile(fileName: String, convertToXML: Boolean) {
     printWriter.close()
 }
 fun main(args: Array<String>) {
-    if (args.size == 1) {
-        val fileName = args[0]
+    if (args.size == 0) {
+        println("Args must be supplied")
+        return
+    }
+    val function = args[0]
+
+    if (function.equals("AddressBook") && args.size >= 2) {
+        val fileName = args[1]
         if (fileName.contains("xml")) {
             convertFile(fileName, false)
         } else if (fileName.contains("json")) {
@@ -26,10 +32,10 @@ fun main(args: Array<String>) {
         } else {
             println("Arg must be an XML or JSON file.")
         }
-    } else if (args.size == 3) {
-        val word1 = args[0]
-        val word2 = args[1]
-        val shuffle = args[2]
+    } else if (function.equals("Shuffle") && args.size >= 4) {
+        val word1 = args[1]
+        val word2 = args[2]
+        val shuffle = args[3]
 
         val fileName = "output.txt"
         val outputFile = File(fileName)

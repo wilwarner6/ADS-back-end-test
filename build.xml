@@ -70,7 +70,14 @@
             <classpath>
                 <path refid="kotlin.stdlib.path"/>
                 <pathelement path="${build.dir}/classes"/>
+                <fileset dir="lib/">
+                    <include name="*.jar" />
+                </fileset>
             </classpath>
+            <arg value="${arg0}"/>
+            <arg value="${arg1}"/>
+            <arg value="${arg2}"/>
+            <arg value="${arg3}"/>
         </java>
     </target>
 
