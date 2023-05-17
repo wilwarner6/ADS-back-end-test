@@ -11,3 +11,8 @@ java -jar ./dist/ADS-back-end-test.jar TOURNAMENT DINNER TOUDINN
 ```
 This project was built using Ant. Dependency management is being handled using Ivy.
 To build locally, update the "ivy.lib" and "kotlin.lib" paths to the correct paths for your machine in build.xml.
+
+Unit tests can be run using ant:
+```
+ant test
+```
