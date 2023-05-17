@@ -6,7 +6,7 @@ class XMLJSONConverter {
         val json = XML.toJSONObject(xml)
         return json.toString(4)
     }
-    fun jsonToXml(json: String): String {
+    fun convertJsonToXml(json: String): String {
         val jsonObject = JSONObject(json)
         return XML.toString(jsonObject)
     }
