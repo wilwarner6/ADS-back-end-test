@@ -7,6 +7,9 @@
     <property name="main.class" value="MainKt"/>
     <property name="kotlin.lib" value="/usr/local/Cellar/kotlin/1.8.21//libexec/lib" />
     <property name="ivy.lib" value="/usr/local/Cellar/ivy/2.5.1/libexec" />
+    <property name="lib.dir" value="lib" />
+    <property name="test.dir" value="src/test/kotlin" />
+    <property name="reports.dir" value="reports/tests" />
 
     <taskdef uri="antlib:org.apache.ivy.ant" resource="org/apache/ivy/ant/antlib.xml">
         <classpath>
@@ -53,11 +56,13 @@
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
+        <delete dir="${reports.dir}"/>
     </target>
 
     <target name="init">
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${dist.dir}"/>
+        <mkdir dir="${reports.dir}"/>
     </target>
 
     <target name="run" depends="compile">
@@ -83,16 +88,39 @@
                     </zips>
                 </archives>
             </restrict>
-<!--            <fileset dir="${kotlin.lib}">-->
-<!--                <include name="kotlin-stdlib.jar" />-->
-<!--            </fileset>-->
-<!--            <fileset dir="lib">-->
-<!--                <include name="**/*.jar"/>-->
-<!--            </fileset>-->
             <manifest>
                 <attribute name="Main-Class" value="${main.class}"/>
             </manifest>
         </jar>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <mkdir dir="${reports.dir}" />
+        <junit printsummary="yes">
+            <classpath>
+                <pathelement path="${build.dir}/classes" />
+                <fileset dir="${lib.dir}" includes="*.jar" />
+                <fileset dir="${kotlin.lib}">
+                    <include name="kotlin-stdlib.jar" />
+                </fileset>
+            </classpath>
+            <formatter type="plain" />
+            <batchtest todir="${reports.dir}">
+                <fileset dir="${build.dir}/classes">
+                    <include name="*Test*.class" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <!-- Define the compile-test target -->
+    <target name="compile-test" depends="compile">
+        <javac srcdir="${test.dir}" destdir="${build.dir}" includeantruntime="false">
+            <classpath>
+                <pathelement path="${build.dir}" />
+                <fileset dir="${lib.dir}" includes="*.jar" />
+            </classpath>
+        </javac>
     </target>
 
     <!-- Default target -->
