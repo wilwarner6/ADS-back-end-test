@@ -1,7 +1,19 @@
-import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Test
 
 class ADSUnitTests {
+
+    @Test
+    fun testXMLConversion() {
+        val fileConverter = XMLJSONConverter()
+        val schemaPath = "ab_schema.xsd"
+        val xmlPath = "ab.xml"
+
+        fileConverter.convertFile(xmlPath, false)
+        fileConverter.convertFile("converted.json", true)
+
+        assertTrue(fileConverter.validateXmlAgainstSchema("converted.xml", schemaPath))
+    }
 
     @Test
     fun testShuffle() {
