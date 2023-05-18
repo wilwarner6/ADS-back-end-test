@@ -6,8 +6,8 @@ class ADSUnitTests {
     @Test
     fun testXMLConversion() {
         val fileConverter = XMLJSONConverter()
-        val schemaPath = "ab_schema.xsd"
-        val xmlPath = "ab.xml"
+        val schemaPath = "src/resources/ab_schema.xsd"
+        val xmlPath = "src/resources/ab.xml"
 
         fileConverter.convertFile(xmlPath, false)
         fileConverter.convertFile("converted.json", true)
